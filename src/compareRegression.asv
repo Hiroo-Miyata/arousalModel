@@ -9,7 +9,7 @@ clear all; close all;
 % Question 1 what previous paper did? to prove the model is appropriate.
 % AIC / BIC is useful for evaluating? check byron's paper.
 
-status = 1;
+status = 0;
 
 
 %% prepare the dataset
@@ -31,10 +31,10 @@ if status == 0
     load("../data/fake/data.mat");
 elseif status == 1
     load("../data/processed/data.mat");
-    firingRates = firingRates';
+    firingRates 
 end
 
-[ntrials, nneurons] = size(firingRates);
+ntrials = length(reactionTimes);
 directions = unique(directionLabels); ndirections = length(directions);
 rewards = unique(rewardLabels); nrewards = length(rewards);
 
@@ -71,24 +71,18 @@ end
 types = ["gain", "offset", "normal"];
 regressions = ["ML", "MAP"];
 
-for n=1:nneurons
-    figure;
-    for i = 1:length(regressions)
-        subplot(1,2,i);
-        regression = regressions(i);
-        Y = zeros(3,1);
-        for j = 1:length(types)
-            type = types(j);
-            [w, RMSE, r2, AIC] = MAPregression(firingRates(:, n), tuningCurves, reactionTimes, rewardLabels, directionLabels, type, regression);
-            Y(j) = RMSE;
-        end
-        bar(1:3, Y);
-        xticks([1 2 3])
-        xticklabels(types);
-        ylabel("root mean squared error (Hz)")
-        title(regression);
+figure;
+for i = 1:length(regressions)
+    subplot(1,2,i);
+    regression = regressions(i);
+    Y = zeros(3,1);
+    for j = 1:length(types)
+        type = types(j);
+        [w, RMSE, r2, AIC] = MAPregression(firingRates, tuningCurves, reactionTimes, rewardLabels, directionLabels, type, regression);
+        Y(j) = RMSE;
     end
-    saveas(gcf, "../results/20230310/neuron-"+n+".jpg");
-    close all;
+    bar(1:3, Y);
+    xticks([1 2 3])
+    xticklabels(types);
 end
 
