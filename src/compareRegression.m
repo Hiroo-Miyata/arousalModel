@@ -72,23 +72,28 @@ types = ["gain", "offset", "normal"];
 regressions = ["ML", "MAP"];
 
 for n=1:nneurons
-    figure;
+    Y = zeros(length(regressions), length(types));
     for i = 1:length(regressions)
-        subplot(1,2,i);
         regression = regressions(i);
-        Y = zeros(3,1);
         for j = 1:length(types)
             type = types(j);
             [w, RMSE, r2, AIC] = MAPregression(firingRates(:, n), tuningCurves, reactionTimes, rewardLabels, directionLabels, type, regression);
-            Y(j) = RMSE;
+            Y(i, j) = RMSE;
         end
-        bar(1:3, Y);
-        xticks([1 2 3])
-        xticklabels(types);
-        ylabel("root mean squared error (Hz)")
-        title(regression);
     end
-    saveas(gcf, "../results/20230310/neuron-"+n+".jpg");
-    close all;
+%     figure;
+%     for i = 1:length(regressions)
+%         subplot(1,2,i);
+%         bar(1:3, Y(i, :));
+%         xticks([1 2 3])
+%         xticklabels(types);
+%         ylabel("root mean squared error (Hz)")
+%         title(regression);
+%     end
+%     if status == 0
+%         n = "fake";
+%     end
+%     saveas(gcf, "../results/20230310/neuron-"+n+".jpg");
+%     close all;
 end
 
