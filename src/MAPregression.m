@@ -51,12 +51,12 @@ for i = 1:k
     % get root mean squared error and r2 value
     if type == "normal"
         SEs = (Ytest-tuningCurves(test)).^2;
-        RMSE(i) = sqrt(mean(SEs));
+        RMSE(i) = mean(SEs);
         r2(i) = 1 - (sum((Ytest - tuningCurves(test)).^2) / sum((Ytest - mean(Ytest)).^2));
         AIC(i) = nan;
     else
         SEs = (Ytest - Xtest * w).^2;
-        RMSE(i) = sqrt(mean(SEs));
+        RMSE(i) = mean(SEs);
         r2(i) = 1 - (sum((Ytest - Xtest * w).^2) / sum((Ytest - mean(Ytest)).^2));
         % get AIC
         AIC(i) = ntrials * log(RMSE(i)) + 2 * length(w);

@@ -9,8 +9,8 @@
 % Question 1 what previous paper did? to prove the model is appropriate.
 % AIC / BIC is useful for evaluating? check byron's paper.
 
-status = 0;
-outputFolder = "../results/20230319/fake-";
+status = 1;
+outputFolder = "../results/20230320/";
 
 %% prepare the dataset
 % input: filename string
